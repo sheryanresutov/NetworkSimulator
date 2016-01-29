@@ -1,5 +1,6 @@
 package Domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Host {
@@ -7,10 +8,10 @@ public class Host {
     //has a network address, which uniquely identifies each node on the network
     private String id;
 
-    private List flows;
+    private List<Flow> flows = new ArrayList<>();
 
     //will have at most one link connected
-    private String link;
+    private Link link;
 
 
     //can process an infinite amount of incoming data instantaneously, but outgoing data
@@ -25,19 +26,23 @@ public class Host {
         this.id = id;
     }
 
-    public List getFlows() {
+    public List<Flow> getFlows() {
         return flows;
     }
 
-    public void setFlows(List flows) {
+    public void setFlows(List<Flow> flows) {
         this.flows = flows;
     }
 
-    public String getLink() {
+    public Link getLink() {
         return link;
     }
 
-    public void setLink(String link) {
+    public void setLink(Link link) {
         this.link = link;
+    }
+
+    public void addFlow(Flow flow) {
+        flows.add(flow);
     }
 }

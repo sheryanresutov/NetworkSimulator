@@ -1,41 +1,115 @@
 {
   "hosts":[
-    {"id":"H1"},
-    {"id":"H2"}
+    {"id":"S1"},
+    {"id":"S2"},
+    {"id":"S3"},
+    {"id":"T1"},
+    {"id":"T2"},
+    {"id":"T3"}
   ],
   "routers":[
     {"id":"R1"},
-    {"id":"R2"}
+    {"id":"R2"},
+    {"id":"R3"},
+    {"id":"R4"}
   ],
   "links":[
     {
       "id":"L1",
-      "rate":1,
-      "delay":1,
-      "bufferSize":1
+      "src":"R1",
+      "dest":"R2",
+      "rate":10,
+      "delay":10,
+      "bufferSize":128
     },
     {
       "id":"L2",
-      "rate":1,
-      "delay":1,
-      "bufferSize":1
+      "src":"R2",
+      "dest":"R3",
+      "rate":10,
+      "delay":10,
+      "bufferSize":128
+    },
+    {
+      "id":"L3",
+      "src":"R3",
+      "dest":"R4",
+      "rate":10,
+      "delay":10,
+      "bufferSize":128
+    },
+    {
+      "id":"L4",
+      "src":"S1",
+      "dest":"R1",
+      "rate":12.5,
+      "delay":10,
+      "bufferSize":128
+    },
+    {
+      "id":"L5",
+      "src":"S2",
+      "dest":"R1",
+      "rate":12.5,
+      "delay":10,
+      "bufferSize":128
+    },
+    {
+      "id":"L6",
+      "src":"T2",
+      "dest":"R2",
+      "rate":12.5,
+      "delay":10,
+      "bufferSize":128
+    },
+    {
+      "id":"L7",
+      "src":"S3",
+      "dest":"R3",
+      "rate":12.5,
+      "delay":10,
+      "bufferSize":128
+    },
+    {
+      "id":"L8",
+      "src":"T1",
+      "dest":"R4",
+      "rate":12.5,
+      "delay":10,
+      "bufferSize":128
+    },
+    {
+      "id":"L9",
+      "src":"T3",
+      "dest":"R4",
+      "rate":12.5,
+      "delay":10,
+      "bufferSize":128
     }
   ],
   "flows":[
     {
       "id":"F1",
-      "delay":1,
-      "src":"H1",
-      "dest":"H2",
-      "dataSize":1,
+      "delay":0.5,
+      "src":"S1",
+      "dest":"T1",
+      "dataSize":35,
       "congCtrlAlgo":"Reno"
     },
     {
       "id":"F2",
-      "delay":1,
-      "src":"H1",
-      "dest":"H2",
-      "dataSize":1,
+      "delay":10,
+      "src":"S2",
+      "dest":"T2",
+      "dataSize":15,
+      "congCtrlAlgo":"Reno"
+    },
+    {
+      "id":"F3",
+      "delay":20,
+      "src":"S3",
+      "dest":"T3",
+      "dataSize":30,
       "congCtrlAlgo":"Reno"
     }
   ]

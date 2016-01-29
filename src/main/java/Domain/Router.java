@@ -1,5 +1,7 @@
 package Domain;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,11 +14,11 @@ public class Router {
     //  must sit on a link buffer until the link is free
 
     //can have an arbitrary number of links connected
-    private List links;
+    private List<Link> links = new ArrayList<>();
 
     //need to implement a dynamic routing protocol that uses link cost as a distance metric
     //  and route packets along the shortest path according to this metric
-    private Map routingTable;
+    private Map routingTable = new HashMap<>();
 
     //the dynamic routing protocol must be decentralized, and thus will use message passing
     //  to communicate among routers
@@ -49,5 +51,9 @@ public class Router {
 
     public void setRoutingTable(Map routingTable) {
         this.routingTable = routingTable;
+    }
+
+    public void addLink(Link link) {
+        links.add(link);
     }
 }

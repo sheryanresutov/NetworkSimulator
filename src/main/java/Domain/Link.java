@@ -1,14 +1,17 @@
 package Domain;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class Link {
 
     private String id;
+    private String src;
+    private String dest;
     private int rate;
     private int delay;
     private int bufferSize;
-    private List buffer;
+    private List buffer = new LinkedList<>();
     //connect hosts and routers
     //carry packets from one end to the other
     //every link has specified capacity in bits per second
@@ -57,5 +60,21 @@ public class Link {
 
     public void setBuffer(List buffer) {
         this.buffer = buffer;
+    }
+
+    public String getSrc() {
+        return src;
+    }
+
+    public void setSrc(String src) {
+        this.src = src;
+    }
+
+    public String getDest() {
+        return dest;
+    }
+
+    public void setDest(String dest) {
+        this.dest = dest;
     }
 }

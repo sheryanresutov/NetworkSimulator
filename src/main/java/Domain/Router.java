@@ -27,4 +27,27 @@ public class Router {
     //routing table?
 
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public List getLinks() {
+        return links;
+    }
+
+    public void setLinks(List links) {
+        this.links = links;
+    }
+
+    public Map getRoutingTable() {
+        return routingTable;
+    }
+
+    public void setRoutingTable(Map routingTable) {
+        this.routingTable = routingTable;
+    }
 }

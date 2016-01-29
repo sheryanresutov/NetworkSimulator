@@ -4,8 +4,8 @@ public class Flow {
 
     //have a source and destination address
 
-    private int delay;
     private String id;
+    private int delay;
     private String src;
     private String dest;
     private int dataSize;

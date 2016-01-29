@@ -17,5 +17,27 @@ public class Host {
     //must sit on a link buffer until the link is free
 
 
+    public String getId() {
+        return id;
+    }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public List getFlows() {
+        return flows;
+    }
+
+    public void setFlows(List flows) {
+        this.flows = flows;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
 }

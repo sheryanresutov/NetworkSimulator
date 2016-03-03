@@ -1,0 +1,37 @@
+{
+ "links" : {
+  "l1" : {
+   "rate" : 1,
+   "buffer" : 2,
+   "loss" : 3
+  },
+  "l2" : {
+   "rate" : 2,
+   "buffer" : 2,
+   "loss" : 3
+  },
+  "l3" : {
+   "rate" : 3,
+   "buffer" : 2,
+   "loss" : 3
+  }
+ },
+
+ "flows" : {
+  "f1" : {
+   "rate" : 1,
+   "size" : 2,
+   "delay" : 3
+  },
+  "f2" : {
+   "rate" : 2,
+   "size" : 3,
+   "delay" : 4
+  },
+  "f3" : {
+   "rate" : 3,
+   "size" : 4,
+   "delay" : 5
+  }
+ }
+}

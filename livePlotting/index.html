@@ -56,6 +56,18 @@
 				min : 0,
 				position : "right",
 				tickFormatter : msFormatter(1000)
+			}, {
+				min : 0,
+				position : "left"
+			}, {
+				min : 0,
+				position : "right"
+			}, {
+				min : 0,
+				position : "left"
+			}, {
+				min : 0,
+				position : "right"
 			} ],
 			legend : {
 				position : "sw",
@@ -126,7 +138,7 @@
 			metric : "rate",
 			// the label in the graph. you can use a match group from the key regex
 			label : "$1 link rate (Mbps)",
-			yaxis : 2,
+			yaxis : 1,
 			// show only the top 5 (according to the last metric value)
 			showTop : 5,
 			// ignore metrics with zero value

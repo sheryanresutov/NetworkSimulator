@@ -17,6 +17,12 @@
 		// default update interval
 		var updateInterval = 1000;
 
+		// default max number of elements
+		var totalElements = 5
+
+		// the total number of points to keep in the graph
+		var totalPoints = 500;
+
 		// a custom formatter for displaying the latency axis
 		function msFormatter(times) {
 			return function(v, axis) {
@@ -55,19 +61,7 @@
 			}, {
 				min : 0,
 				position : "right",
-				tickFormatter : msFormatter(1000)
-			}, {
-				min : 0,
-				position : "left"
-			}, {
-				min : 0,
-				position : "right"
-			}, {
-				min : 0,
-				position : "left"
-			}, {
-				min : 0,
-				position : "right"
+				//tickFormatter : msFormatter(1000)
 			} ],
 			legend : {
 				position : "sw",
@@ -123,9 +117,6 @@
 		// initialize json2flot with the update interval 
 		var v = $("#updateInterval").val();
 		json2flot.setUpdateInterval(v);
-
-		// the total number of points to keep in the graph
-		var totalPoints = 500;
 		
 		// initialize the first graph
 		json2flot.addGraph("#linkRate", options, [ {
@@ -137,26 +128,12 @@
 			// the metric field
 			metric : "rate",
 			// the label in the graph. you can use a match group from the key regex
-			label : "$1 link rate (Mbps)",
+			label : "link $1 rate (Mbps)",
 			yaxis : 1,
 			// show only the top 5 (according to the last metric value)
-			showTop : 5,
+			showTop : totalElements,
 			// ignore metrics with zero value
 			//ignoreZeros : true
-		}], totalPoints );
-
-		// initialize the second graph
-		json2flot.addGraph("#flowRate", options, [ {
-			path : [ "flows" ],
-			keyRegex : "f(.*)",
-			metric : "rate",
-			label : "$1 flow rate (Mbps)",
-			yaxis : 2,
-			// calculate an avarage of the metric values from the separate results 
-			//operation : "avg",
-			// show only the top 5 (according to the last metric value)
-			showTop : 5,
-			// show only nodes that pass this filter. gets an array of metric nodes. 
 			// we can look up another value in the node that we want to filter by.
 			// in this example we show the latency only for metrics that have 
 			// a request rate > 2 in the last minute
@@ -173,6 +150,51 @@
 				return false;
 			}
 */
+		}], totalPoints );
+
+		json2flot.addGraph("#flowRate", options, [ {
+			path : [ "flows" ],
+			keyRegex : "f(.*)",
+			metric : "rate",
+			label : "flow $1 rate (Mbps)",
+			yaxis : 2,
+			showTop : totalElements,
+		}], totalPoints  );
+
+		json2flot.addGraph("#linkBufferOccupancy", options, [ {
+			path : [ "links" ],
+			keyRegex : "l(.*)",
+			metric : "buffer",
+			label : "link $1 buffer (pkts)",
+			yaxis : 1,
+			showTop : totalElements,
+		}], totalPoints  );
+
+		json2flot.addGraph("#flowWindowSize", options, [ {
+			path : [ "flows" ],
+			keyRegex : "f(.*)",
+			metric : "size",
+			label : "flow $1 window size (pkts)",
+			yaxis : 2,
+			showTop : totalElements,
+		}], totalPoints  );
+
+		json2flot.addGraph("#linkPacketLoss", options, [ {
+			path : [ "links" ],
+			keyRegex : "l(.*)",
+			metric : "loss",
+			label : "link $1 packet loss (pkts)",
+			yaxis : 1,
+			showTop : totalElements,
+		}], totalPoints  );
+
+		json2flot.addGraph("#flowPacketDelay", options, [ {
+			path : [ "flows" ],
+			keyRegex : "f(.*)",
+			metric : "delay",
+			label : "flow $1 packet delay (ms)",
+			yaxis : 2,
+			showTop : totalElements,
 		}], totalPoints  );
 
 		// set the data type for the fetch request. since this example uses a static file 
@@ -208,18 +230,6 @@
 		<h1>Network Simulator - Chen, Resutov, Sokolov</h1>
 	</div>
 
-<!--
-	<div class="pure-g-r">
-		<div class="pure-u-1-5">Comma separated list of URLs:</div>
-		<div class="pure-u-1-3">
-			<div id="connect">
-				<input id="connectUrl"
-					value="data.js"
-					style="width: 80%">
-			</div>
-
-		</div>
--->
 		<div class="pure-u-1-4">
 			<input id="startUpdate" type="button" value="Start"> <input id="stopUpdate" type="button" value="Stop">
 		</div>
@@ -229,10 +239,16 @@
 		<div class="pure-u-1-5">Time between updates:</div>
 
 		<div class="pure-u-1-3">
-			<input id="updateInterval" type="text" value="" style="text-align: right; width: 4em"> milliseconds
+			<input id="updateInterval" type="text" value="1000" style="text-align: right; width: 4em"> milliseconds
 		</div>
+	</div>
+	<p>
+	<div class="pure-g-r">
+		<div class="pure-u-1-5">Display N elements:</div>
 
-
+		<div class="pure-u-1-3">
+			<input id="totalElements" type="text" value="5" style="text-align: right; width: 4em"> elements
+		</div>
 	</div>
 	<p>
 	<div class="pure-g-r">
@@ -248,7 +264,6 @@
 				<div id="flowRate" class="demo-placeholder"></div>
 			</div>
 		</div>
-<!--
 		<div class="pure-u-1-2">
 			<div class="demo-container">
 				Link Buffer Occupancy (pkts)
@@ -273,9 +288,7 @@
 				<div id="flowPacketDelay" class="demo-placeholder"></div>
 			</div>
 		</div>
--->
 	</div>
-
 
 <break>
 <break>

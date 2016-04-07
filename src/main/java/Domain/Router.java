@@ -7,13 +7,8 @@ import java.util.Map;
 
 public class Router {
 
-    //has a network address, which uniquely identifies each node on the network
     private String id;
 
-    //can process an infinite amount of incoming data instantaneously, but outgoing data
-    //  must sit on a link buffer until the link is free
-
-    //can have an arbitrary number of links connected
     private List<Link> links = new ArrayList<>();
 
     //need to implement a dynamic routing protocol that uses link cost as a distance metric
@@ -27,6 +22,12 @@ public class Router {
     //  the simulation
 
     //routing table?
+
+    //need to initialize routing table
+    //need to update routing table
+    //need to receive routing packet
+    //need to receive regular packet
+
 
 
     public String getId() {

@@ -16,72 +16,72 @@
   "links":[
     {
       "id":"L1",
-      "src":"R1",
-      "dest":"R2",
+      "connOne":"R1",
+      "connTwo":"R2",
       "rate":10,
       "delay":10,
       "bufferSize":128
     },
     {
       "id":"L2",
-      "src":"R2",
-      "dest":"R3",
+      "connOne":"R2",
+      "connTwo":"R3",
       "rate":10,
       "delay":10,
       "bufferSize":128
     },
     {
       "id":"L3",
-      "src":"R3",
-      "dest":"R4",
+      "connOne":"R3",
+      "connTwo":"R4",
       "rate":10,
       "delay":10,
       "bufferSize":128
     },
     {
       "id":"L4",
-      "src":"S1",
-      "dest":"R1",
+      "connOne":"S1",
+      "connTwo":"R1",
       "rate":12.5,
       "delay":10,
       "bufferSize":128
     },
     {
       "id":"L5",
-      "src":"S2",
-      "dest":"R1",
+      "connOne":"S2",
+      "connTwo":"R1",
       "rate":12.5,
       "delay":10,
       "bufferSize":128
     },
     {
       "id":"L6",
-      "src":"T2",
-      "dest":"R2",
+      "connOne":"T2",
+      "connTwo":"R2",
       "rate":12.5,
       "delay":10,
       "bufferSize":128
     },
     {
       "id":"L7",
-      "src":"S3",
-      "dest":"R3",
+      "connOne":"S3",
+      "connTwo":"R3",
       "rate":12.5,
       "delay":10,
       "bufferSize":128
     },
     {
       "id":"L8",
-      "src":"T1",
-      "dest":"R4",
+      "connOne":"T1",
+      "connTwo":"R4",
       "rate":12.5,
       "delay":10,
       "bufferSize":128
     },
     {
       "id":"L9",
-      "src":"T3",
-      "dest":"R4",
+      "connOne":"T3",
+      "connTwo":"R4",
       "rate":12.5,
       "delay":10,
       "bufferSize":128

@@ -22,10 +22,10 @@ public class NetworkGenerator {
     private static void connectLinksAndFlows(Network network){
         for(Link link:network.getLinks()){
             network.getHosts().stream()
-                    .filter(host -> host.getId().equals(link.getSrc()) || host.getId().equals(link.getDest()))
+                    .filter(host -> host.getId().equals(link.getConnOne()) || host.getId().equals(link.getConnTwo()))
                     .forEach(host -> host.setLink(link));
             network.getRouters().stream()
-                    .filter(router -> router.getId().equals(link.getSrc()) || router.getId().equals(link.getDest()))
+                    .filter(router -> router.getId().equals(link.getConnOne()) || router.getId().equals(link.getConnTwo()))
                     .forEach(router -> router.addLink(link));
         }
         for(Flow flow:network.getFlows()){

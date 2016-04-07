@@ -2,8 +2,6 @@ package Domain;
 
 public class Flow {
 
-    //have a source and destination address
-
     private String id;
     private int delay;
     private String src;
@@ -11,22 +9,11 @@ public class Flow {
     private int dataSize;
     private String congCtrlAlgo;
 
-    //working packet sending and receiving
-    public void sendPacket(){
-
-    }
-
-    public void receivePacket(){
-
-    }
-
     //implement 2+ cong. cont. algorithms
 
     //generate/send packets at a rate controlled by the congestion control algorithm defined for the flow
-    //
 
-    //should implement at least 2 algos, TCP Reno and FAST-TCP, and be able to choose indep.
-    //  between them for each flow
+    //should implement at least 2 algos, TCP Reno and FAST-TCP, and be able to choose between them
     //may send continuous stream of data or may send finite user-specified amount of data
     //may start immediately or after some user-specified delay
 
@@ -34,7 +21,10 @@ public class Flow {
     //rwnd receivers advertised window
     //ssthreshold slow start threshold
 
+     
 
+
+    //getter and setter methods
     public int getDelay() {
         return delay;
     }

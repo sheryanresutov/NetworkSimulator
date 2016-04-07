@@ -6,14 +6,12 @@ import java.util.List;
 public class Link {
 
     private String id;
-    private String src;
-    private String dest;
+    private String connOne;
+    private String connTwo;
     private int rate;
     private int delay;
     private int bufferSize;
     private List buffer = new LinkedList<>();
-    //connect hosts and routers
-    //carry packets from one end to the other
     //every link has specified capacity in bits per second
     //link buffers are FIFO
     //packets that try to enter full buffer will be dropped
@@ -62,19 +60,19 @@ public class Link {
         this.buffer = buffer;
     }
 
-    public String getSrc() {
-        return src;
+    public String getConnOne() {
+        return connOne;
     }
 
-    public void setSrc(String src) {
-        this.src = src;
+    public void setConnOne(String connOne) {
+        this.connOne = connOne;
     }
 
-    public String getDest() {
-        return dest;
+    public String getConnTwo() {
+        return connTwo;
     }
 
-    public void setDest(String dest) {
-        this.dest = dest;
+    public void setConnTwo(String connTwo) {
+        this.connTwo = connTwo;
     }
 }

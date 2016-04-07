@@ -1,0 +1,297 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Network Simulator - Chen, Resutov, Sokolov</title>
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css">
+<link href="example.css" rel="stylesheet" type="text/css">
+<script language="javascript" type="text/javascript" src="js/jquery-2.1.0.min.js"></script>
+<script language="javascript" type="text/javascript" src="js/jquery.flot.js"></script>
+<script language="javascript" type="text/javascript" src="js/jquery.flot.time.js"></script>
+<script language="javascript" type="text/javascript" src="js/jquery.flot.resize.js"></script>
+<script language="javascript" type="text/javascript" src="js/jquery.flot.hiddengraphs.js"></script>
+<script language="javascript" type="text/javascript" src="js/json2flot.js"></script>
+<script type="text/javascript">
+	$(function() {
+
+		// default update interval
+		var updateInterval = 1000;
+
+		// default max number of elements
+		var totalElements = 5
+
+		// the total number of points to keep in the graph
+		var totalPoints = 500;
+
+		// a custom formatter for displaying the latency axis
+		function msFormatter(times) {
+			return function(v, axis) {
+				return (v * times).toFixed(0) + "MS";
+			}
+		}
+
+		// hook up text box changes
+		$('#connectUrl').on('change', function() {
+			var hosts = $("#connectUrl").val().split(",");
+			json2flot.setMetricURLs(hosts);
+		});
+
+		$("#updateInterval").val(updateInterval).change(function() {
+			var v = $(this).val();
+			json2flot.setUpdateInterval(v);
+			$(this).val("" + json2flot.getUpdateInterval());
+		});
+
+		// flot options object to set up the axes
+		var options = {
+			lines : {
+				show : true
+			},
+			points : {
+				show : false
+			},
+			xaxes : [ {
+				mode : "time",
+				timeformat : "%H:%M:%S",
+				minTickSize : [ 1, "second" ]
+			} ],
+			yaxes : [ {
+				min : 0,
+				position : "left"
+			}, {
+				min : 0,
+				position : "right",
+				//tickFormatter : msFormatter(1000)
+			} ],
+			legend : {
+				position : "sw",
+				hideable : true
+			},
+			grid : {
+				hoverable : true
+			}
+		};
+
+		// a tooltip function for the graph
+		function tooltipFunc(times) {
+			return function(event, pos, item) {
+				if (item) {
+					var axis = item.series.yaxis.n;
+					if (axis == 2) {
+						var y = (item.datapoint[1] * times).toFixed(2);
+						$("#tooltip").html(item.series.label + ": " + y + " MS").css({
+							top : item.pageY + 5,
+							left : item.pageX + 5
+						}).fadeIn(200);
+					} else {
+						var y = (item.datapoint[1]).toFixed(2);
+						$("#tooltip").html(item.series.label + ": " + y).css({
+							top : item.pageY + 5,
+							left : item.pageX + 5
+						}).fadeIn(200);
+					}
+				} else {
+					$("#tooltip").hide();
+				}
+			}
+		}
+
+		// the tooltip style
+		$("<div id='tooltip'></div>").css({
+			position : "absolute",
+			display : "none",
+			border : "1px solid #fdd",
+			padding : "2px",
+			"background-color" : "#fee",
+			opacity : 0.80
+		}).appendTo("body");
+
+		// hook up the tooltips
+		$("#placeholder1").bind("plothover", tooltipFunc(1000));
+		$("#placeholder2").bind("plothover", tooltipFunc(1000));
+		
+		// initialize json2flot with the urls
+		//var hosts = $("#connectUrl").val().split(",");
+		var hosts = "data.json";
+		json2flot.setMetricURLs(hosts);
+		// initialize json2flot with the update interval 
+		var v = $("#updateInterval").val();
+		json2flot.setUpdateInterval(v);
+		
+		// initialize the first graph
+		json2flot.addGraph("#linkRate", options, [ {
+			// a simple metric to get from a single node
+			// the node path
+			path : [ "links" ],
+			// the regex to match child nodes with
+			keyRegex : "l(.*)",
+			// the metric field
+			metric : "rate",
+			// the label in the graph. you can use a match group from the key regex
+			label : "link $1 rate (Mbps)",
+			yaxis : 1,
+			// show only the top 5 (according to the last metric value)
+			showTop : totalElements,
+			// ignore metrics with zero value
+			//ignoreZeros : true
+			// we can look up another value in the node that we want to filter by.
+			// in this example we show the latency only for metrics that have 
+			// a request rate > 2 in the last minute
+/*			
+			filter : function(nodes) {
+				var val = 0.0;
+				for ( var n = 0; n < nodes.length; n++) {
+					var node = nodes[n];
+					if (node && node["rate"])
+						val += node["rate"];
+				}
+				if (val > 2)
+					return true;
+				return false;
+			}
+*/
+		}], totalPoints );
+
+		json2flot.addGraph("#flowRate", options, [ {
+			path : [ "flows" ],
+			keyRegex : "f(.*)",
+			metric : "rate",
+			label : "flow $1 rate (Mbps)",
+			yaxis : 2,
+			showTop : totalElements,
+		}], totalPoints  );
+
+		json2flot.addGraph("#linkBufferOccupancy", options, [ {
+			path : [ "links" ],
+			keyRegex : "l(.*)",
+			metric : "buffer",
+			label : "link $1 buffer (pkts)",
+			yaxis : 1,
+			showTop : totalElements,
+		}], totalPoints  );
+
+		json2flot.addGraph("#flowWindowSize", options, [ {
+			path : [ "flows" ],
+			keyRegex : "f(.*)",
+			metric : "size",
+			label : "flow $1 window size (pkts)",
+			yaxis : 2,
+			showTop : totalElements,
+		}], totalPoints  );
+
+		json2flot.addGraph("#linkPacketLoss", options, [ {
+			path : [ "links" ],
+			keyRegex : "l(.*)",
+			metric : "loss",
+			label : "link $1 packet loss (pkts)",
+			yaxis : 1,
+			showTop : totalElements,
+		}], totalPoints  );
+
+		json2flot.addGraph("#flowPacketDelay", options, [ {
+			path : [ "flows" ],
+			keyRegex : "f(.*)",
+			metric : "delay",
+			label : "flow $1 packet delay (ms)",
+			yaxis : 2,
+			showTop : totalElements,
+		}], totalPoints  );
+
+		// set the data type for the fetch request. since this example uses a static file 
+		// we set it to "json". to get data for AJAX use "jsonp".
+		json2flot.setDataType("json");
+
+		// start fetching the data and updating the graphs
+		startUpdate();
+		
+		$('#startUpdate').on('click', function() {
+			startUpdate();
+		});
+		$('#stopUpdate').on('click', function() {
+			stopUpdate();
+		});
+		
+		function startUpdate() {
+			json2flot.startUpdate();
+			$('#startUpdate')[0].style.color = "gray";
+			$('#stopUpdate')[0].style.color = null;
+		}
+		function stopUpdate() {
+			json2flot.stopUpdate();
+			$('#startUpdate')[0].style.color = null;
+			$('#stopUpdate')[0].style.color = "gray";
+		}
+	});
+</script>
+</head>
+<body>
+
+	<div id="header">
+		<h1>Network Simulator - Chen, Resutov, Sokolov</h1>
+	</div>
+
+		<div class="pure-u-1-4">
+			<input id="startUpdate" type="button" value="Start"> <input id="stopUpdate" type="button" value="Stop">
+		</div>
+	</div>
+	<p>
+	<div class="pure-g-r">
+		<div class="pure-u-1-5">Time between updates:</div>
+
+		<div class="pure-u-1-3">
+			<input id="updateInterval" type="text" value="1000" style="text-align: right; width: 4em"> milliseconds
+		</div>
+	</div>
+	<p>
+	<div class="pure-g-r">
+		<div class="pure-u-1-5">Display N elements:</div>
+
+		<div class="pure-u-1-3">
+			<input id="totalElements" type="text" value="5" style="text-align: right; width: 4em"> elements
+		</div>
+	</div>
+	<p>
+	<div class="pure-g-r">
+		<div class="pure-u-1-2">
+			<div class="demo-container">
+				Link Rate (Mbps)
+				<div id="linkRate" class="demo-placeholder"></div>
+			</div>
+		</div>
+		<div class="pure-u-1-2">
+			<div class="demo-container">
+				Flow Rate (Mbps)
+				<div id="flowRate" class="demo-placeholder"></div>
+			</div>
+		</div>
+		<div class="pure-u-1-2">
+			<div class="demo-container">
+				Link Buffer Occupancy (pkts)
+				<div id="linkBufferOccupancy" class="demo-placeholder"></div>
+			</div>
+		</div>
+		<div class="pure-u-1-2">
+			<div class="demo-container">
+				Flow Window Size (pkts)
+				<div id="flowWindowSize" class="demo-placeholder"></div>
+			</div>
+		</div>
+		<div class="pure-u-1-2">
+			<div class="demo-container">
+				Link Packet Loss (pkts)
+				<div id="linkPacketLoss" class="demo-placeholder"></div>
+			</div>
+		</div>
+		<div class="pure-u-1-2">
+			<div class="demo-container">
+				Flow Packet Delay (ms)
+				<div id="flowPacketDelay" class="demo-placeholder"></div>
+			</div>
+		</div>
+	</div>
+
+<break>
+<break>
+<p>powered by json2flot: https://github.com/rore/json2flot</p>
+</body>
+</html>

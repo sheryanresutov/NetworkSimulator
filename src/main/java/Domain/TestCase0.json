@@ -1,0 +1,25 @@
+{
+  "hosts":[
+    {"name":"H1"},
+    {"name":"H2"}
+  ],
+  "links":[
+    {
+      "name":"L1",
+      "endpoint1":"H1",
+      "endpoint2":"H2",
+      "rate_bpms":10,
+      "delay_ms":10,
+      "buffer_capacity":64
+    }
+  ],
+  "flows":[
+    {
+      "name":"F1",
+      "start_time_sec":1.0,
+      "src":"H1",
+      "dest":"H2",
+      "size_mb":160
+    }
+  ]
+}

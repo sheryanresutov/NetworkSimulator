@@ -1,5 +1,10 @@
 package Domain;
 
+import Devices.Flow;
+import Devices.Host;
+import Devices.Link;
+import Devices.Router;
+
 import java.util.List;
 
 public class Network {

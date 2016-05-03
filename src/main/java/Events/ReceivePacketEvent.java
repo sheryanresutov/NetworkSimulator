@@ -48,7 +48,7 @@ public class ReceivePacketEvent extends Event{
                 .collect(Collectors.toList());
 
         double time = getTime();
-        link.updateLinkTraffic(time, pkt.getType());
+        link.updateLinkTraffic((int)time, pkt.getType());
 
         if (!routers.isEmpty()) {
             Router router = routers.get(0);

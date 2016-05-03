@@ -13,7 +13,7 @@ public class Flow {
 
     private String name;
     private double start_time_sec;
-    private int size_mb;
+    private double size_mb;
     private double amt_received_mb = 0;
     private Host source;
     private Host destination;
@@ -30,7 +30,7 @@ public class Flow {
     private int num_duplicate_acks = 0;
     private double timeout_length_ms = DEFAULT_INITIAL_TIMEOUT;
     private double lin_growth_winsize_threshold = -1;
-    private boolean FAST_TCP = false;
+    private boolean FAST_TCP = Main.USE_FAST;
     private double avg_RTT = -1;
     private double std_RTT = -1;
     private double min_RTT = Double.MAX_VALUE;
@@ -82,7 +82,7 @@ public class Flow {
         this.start_time_sec = start_time_sec;
     }
 
-    public int getSize_mb() {
+    public double getSize_mb() {
         return size_mb;
     }
 
@@ -130,8 +130,8 @@ public class Flow {
         return rightTime;
     }
 
-    public int getNumTotalPackets(){
-        int size_in_bytes = size_mb * Main.BYTES_PER_MEGABIT;
+    public long getNumTotalPackets(){
+        long size_in_bytes = (int)size_mb * Main.BYTES_PER_MEGABIT;
         if (size_in_bytes % Main.FLOW_PACKET_SIZE == 0)
             return size_in_bytes / Main.FLOW_PACKET_SIZE;
         return size_in_bytes / Main.FLOW_PACKET_SIZE + 1;
@@ -251,9 +251,9 @@ public class Flow {
     public List<Packet> peekOutstandingPackets(){
         List<Packet> outstanding_pkts = new ArrayList<>();
 
-        double window_end;
+        int window_end;
         if (waiting_for_seqnum_before_resuming == -1) {
-            window_end = window_start + window_size;
+            window_end = window_start + (int)window_size;
         }
         else {
             window_end = highest_sent_flow_seqnum + 2;

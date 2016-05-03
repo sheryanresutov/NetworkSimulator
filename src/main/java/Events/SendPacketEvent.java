@@ -59,12 +59,6 @@ public class SendPacketEvent extends Event {
             ReceivePacketEvent e = new ReceivePacketEvent(arrival_time, eventQueueManager,
                 flow, pkt, getDestinationNode(), link);
             eventQueueManager.addEvent(e);
-            List<Router> routers = Main.network.getRouters().stream().filter(router -> router.getName().equals(departure_node)).collect(Collectors.toList());
-            //idk if this should be commented
-//            if(!routers.isEmpty() && pkt.getType() == PacketType.DataPacket){
-//                TimeOutEvent timeOutEvent = new TimeOutEvent(getTime()+flow.getTimeoutLengthMs(),eventQueueManager,flow,pkt.getSeq());
-//                eventQueueManager.addEvent(timeOutEvent);
-//            }
         }
 
 

@@ -2,47 +2,37 @@ package Domain;
 
 public class LinkData {
 
-    private String linkId;
-    private double linkRate;
-    private double BuffOcc;
-    private double packetLoss;
+    private double rate;
+    private double buffer;
+    private double loss;
 
-    public LinkData(String name, double rateMbps, double buffOcc, int pktLoss) {
-        this.linkId = name;
-        this.linkRate = rateMbps;
-        this.BuffOcc = buffOcc;
-        this.packetLoss = pktLoss;
+    public LinkData(double rateMbps, double buffer, int pktLoss) {
+        this.rate = rateMbps;
+        this.buffer = buffer;
+        this.loss = pktLoss;
     }
 
-    public String getLinkId() {
-        return linkId;
+    public double getRate() {
+        return rate;
     }
 
-    public void setLinkId(String linkId) {
-        this.linkId = linkId;
+    public void setRate(double rate) {
+        this.rate = rate;
     }
 
-    public double getLinkRate() {
-        return linkRate;
+    public double getBuffer() {
+        return buffer;
     }
 
-    public void setLinkRate(double linkRate) {
-        this.linkRate = linkRate;
+    public void setBuffer(double buffOcc) {
+        buffer = buffOcc;
     }
 
-    public double getBuffOcc() {
-        return BuffOcc;
+    public double getLoss() {
+        return loss;
     }
 
-    public void setBuffOcc(double buffOcc) {
-        BuffOcc = buffOcc;
-    }
-
-    public double getPacketLoss() {
-        return packetLoss;
-    }
-
-    public void setPacketLoss(double packetLoss) {
-        this.packetLoss = packetLoss;
+    public void setLoss(double loss) {
+        this.loss = loss;
     }
 }

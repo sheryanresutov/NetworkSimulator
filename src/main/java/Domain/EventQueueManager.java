@@ -6,6 +6,7 @@ import Devices.Router;
 import Events.*;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -16,11 +17,8 @@ import java.util.*;
 public class EventQueueManager {
 
     private ListMultimap<Double, Event> events = ArrayListMultimap.create();
-    List<Double> times = new ArrayList<>();
-    List<LinkData> linkDataList = new ArrayList<>();
-    List<FlowData> flowDataList = new ArrayList<>();
     private int eventCount = 0;
-    private PrintWriter printWriter;
+    private ObjectMapper objectMapper;
 
     public void addEvent(Event e) {
         events.put(e.getTime(), e);
@@ -42,35 +40,92 @@ public class EventQueueManager {
     }
 
     public void logEvent(double currTime) throws IOException {
-        String linkStr = "",flowStr="";
         eventCount++;
-        if((eventCount % 50) != 0 ){
+        if((eventCount % Main.EVENT_LOG_FREQ) != 0 ){
             return;
         }
         else {
-            times.add(currTime);
+            try{
+                Thread.sleep(Main.WAIT_TIME);
+            }catch(InterruptedException ie){
+                Thread.currentThread().interrupt();
+            }
+            DataOne dataOne = new DataOne();
+            DataTwo dataTwo = new DataTwo();
+            DataThree dataThree = new DataThree();
+
             for (Link link : Main.network.getLinks()) {
-//                LinkData linkData = new LinkData(link.getName(), link.getRateMbps(), link.getBufferOccupancy() / 1000, link.getPktLoss());
-//                linkDataList.add(linkData);
-//                System.out.println(link.getRateMbps());
-                linkStr = linkStr+","+link.getName()+","+link.getRateMbps()+","+(link.getBufferOccupancy()/1000)+","+link.getPktLoss();
+                LinkData linkData = new LinkData(link.getRateMbps(), link.getBufferOccupancy()/1000, link.getPktLoss());
+                switch (link.getName()){
+                    case "L0":
+                        dataTwo.links.setL0(linkData);
+                    case "L1":
+                        dataOne.links.setL1(linkData);
+                        dataTwo.links.setL1(linkData);
+                        dataThree.links.setL1(linkData);
+                        break;
+                    case "L2":
+                        dataTwo.links.setL2(linkData);
+                        dataThree.links.setL2(linkData);
+                        break;
+                    case "L3":
+                        dataTwo.links.setL3(linkData);
+                        dataThree.links.setL3(linkData);
+                        break;
+                    case "L4":
+                        dataTwo.links.setL4(linkData);
+                        dataThree.links.setL4(linkData);
+                        break;
+                    case "L5":
+                        dataTwo.links.setL5(linkData);
+                        dataThree.links.setL5(linkData);
+                        break;
+                    case "L6":
+                        dataThree.links.setL6(linkData);
+                        break;
+                    case "L7":
+                        dataThree.links.setL7(linkData);
+                        break;
+                    case "L8":
+                        dataThree.links.setL8(linkData);
+                        break;
+                    case "L9":
+                        dataThree.links.setL9(linkData);
+                        break;
+                }
             }
 
             for (Flow flow : Main.network.getFlows()) {
-//                FlowData flowData = new FlowData(flow.getName(), flow.getFlowRateMbps(currTime), flow.getWindowSize(), flow.getPktDelay(currTime));
-//                flowDataList.add(flowData);
-//                System.out.println(flow.getPktDelay(currTime));
-                flowStr = flowStr+","+flow.getName()+","+flow.getFlowRateMbps(currTime)+","+flow.getWindowSize()+","+flow.getPktDelay(currTime);
+                FlowData flowData = new FlowData(flow.getFlowRateMbps(currTime), flow.getWindowSize(), flow.getPktDelay(currTime));
+                switch (flow.getName()){
+                    case "F1":
+                        dataOne.flows.setF1(flowData);
+                        dataTwo.flows.setF1(flowData);
+                        dataThree.flows.setF1(flowData);
+                        break;
+                    case "F2":
+                        dataThree.flows.setF2(flowData);
+                        break;
+                    case "F3":
+                        dataThree.flows.setF3(flowData);
+                        break;
+                }
             }
-            printWriter.println(currTime+linkStr+flowStr);
-            //write currTime,l1 stats,l2 stats,...f1 stats,f2 stats...
-
+            if(Main.TEST_CASE == 0){
+                objectMapper.writeValue(new File("/home/sheryan/networksimulator/livePlotting/data.json"),dataOne);
+            }
+            else if (Main.TEST_CASE == 1){
+                objectMapper.writeValue(new File("/home/sheryan/networksimulator/livePlotting/data.json"),dataTwo);
+            }
+            else{
+                objectMapper.writeValue(new File("/home/sheryan/networksimulator/livePlotting/data.json"),dataThree);
+            }
         }
     }
 
     public void runSimulation() throws IOException {
-        printWriter = new PrintWriter(
-                new FileWriter("/home/sheryan/networksimulator/src/main/java/Domain/TestCase"+Main.TEST_CASE+"Results.csv"));
+        double startTime = System.currentTimeMillis();
+        objectMapper = new ObjectMapper();
         Main.network.getRouters().forEach(Devices.Router::initializeTables);
 
         RouterDiscoveryEvent r_event = new RouterDiscoveryEvent(0, this);
@@ -104,10 +159,10 @@ public class EventQueueManager {
         while (!events.isEmpty() && !(allFlowsDone())) {
             Event earliestEvent = getEarliestEvent(events);
             events.remove(earliestEvent.getTime(), earliestEvent);
-//            System.out.println(earliestEvent.getTime());
             earliestEvent.runEvent();
         }
-        printWriter.close();
+        double endTime = System.currentTimeMillis();
+        System.out.println((endTime-startTime)/1000);
     }
 
     private Event getEarliestEvent(ListMultimap<Double, Event> events) {

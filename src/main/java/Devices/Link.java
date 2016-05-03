@@ -14,7 +14,7 @@ public class Link {
     private String name;
     private String endpoint1;
     private String endpoint2;
-    private int rate_bpms;
+    private double rate_bpms;
     private int delay_ms;
     private int buffer_capacity;
     private Map<Double, Packet> buffer = new HashMap<>();
@@ -36,7 +36,7 @@ public class Link {
         this.name = name;
     }
 
-    public int getRate_bpms() {
+    public double getRate_bpms() {
         return rate_bpms;
     }
 
@@ -206,7 +206,7 @@ public class Link {
         linkTraffic.put("rtr", 0);
     }
 
-    public void updateLinkTraffic(double time, PacketType type){
+    public void updateLinkTraffic(int time, PacketType type){
         if ((time <= rightTime) && (time > leftTime)) {
             if (type == PacketType.DataPacket){
                 linkTraffic.put("flow",linkTraffic.get("flow")+1);

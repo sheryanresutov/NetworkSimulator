@@ -20,7 +20,6 @@ public class TimeOutEvent extends Event{
 
     @Override
     public void runEvent() {
-        System.out.println();
         if (!flow.getRoundTripTimes().containsKey(seqnum)) {
             return;
         }

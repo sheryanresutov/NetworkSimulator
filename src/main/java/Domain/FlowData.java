@@ -2,47 +2,37 @@ package Domain;
 
 public class FlowData {
 
-    private String flowId;
-    private double flowRate;
-    private double winSize;
-    private double packetDelay;
+    private double rate;
+    private double size;
+    private double delay;
 
-    public FlowData(String name, double flowRateMbps, double windowSize, double pktDelay) {
-        this.flowId = name;
-        this.flowRate = flowRateMbps;
-        this.winSize = windowSize;
-        this.packetDelay = pktDelay;
+    public FlowData(double flowRateMbps, double windowSize, double pktDelay) {
+        this.rate = flowRateMbps;
+        this.size = windowSize;
+        this.delay = pktDelay;
     }
 
-    public String getFlowId() {
-        return flowId;
+    public double getRate() {
+        return rate;
     }
 
-    public void setFlowId(String flowId) {
-        this.flowId = flowId;
+    public void setRate(double rate) {
+        this.rate = rate;
     }
 
-    public double getFlowRate() {
-        return flowRate;
+    public double getSize() {
+        return size;
     }
 
-    public void setFlowRate(double flowRate) {
-        this.flowRate = flowRate;
+    public void setSize(double size) {
+        this.size = size;
     }
 
-    public double getWinSize() {
-        return winSize;
+    public double getDelay() {
+        return delay;
     }
 
-    public void setWinSize(double winSize) {
-        this.winSize = winSize;
-    }
-
-    public double getPacketDelay() {
-        return packetDelay;
-    }
-
-    public void setPacketDelay(double packetDelay) {
-        this.packetDelay = packetDelay;
+    public void setDelay(double delay) {
+        this.delay = delay;
     }
 }

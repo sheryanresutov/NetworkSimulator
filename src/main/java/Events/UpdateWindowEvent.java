@@ -25,7 +25,7 @@ public class UpdateWindowEvent extends Event{
             new_windowsize = Main.ALPHA;
         }
         else {
-            new_windowsize = w * (flow.getMinRTT()/(flow.getPktRTT())) + Main.ALPHA;
+            new_windowsize = (w * (flow.getMinRTT()/(flow.getPktRTT())) + Main.ALPHA);
         }
 
         flow.setFASTWindowSize(new_windowsize);

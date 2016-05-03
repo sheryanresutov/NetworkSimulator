@@ -35,7 +35,7 @@
 		if (interval && !isNaN(+interval)) {
 			updateInterval = +interval;
 			if (updateInterval < 10) {
-				updateInterval = 10;
+				updateInterval = updateInterval;
 			}
 		}
 	}

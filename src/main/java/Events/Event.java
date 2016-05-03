@@ -11,7 +11,6 @@ public abstract class Event {
 
     public Event(double time, EventQueueManager eventQueueManager) {
         this.time=time;
-//        System.out.println(time);
         this.eventQueueManager=eventQueueManager;
         this.id_generator++;
     }

@@ -34,8 +34,8 @@
 	json2flot.setUpdateInterval = function(interval) {
 		if (interval && !isNaN(+interval)) {
 			updateInterval = +interval;
-			if (updateInterval < 10) {
-				updateInterval = updateInterval;
+			if (updateInterval < 1) {
+				updateInterval = 1;
 			}
 		}
 	}

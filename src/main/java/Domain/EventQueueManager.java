@@ -112,13 +112,13 @@ public class EventQueueManager {
                 }
             }
             if(Main.TEST_CASE == 0){
-                objectMapper.writeValue(new File("/home/sheryan/networksimulator/livePlotting/data.json"),dataOne);
+                objectMapper.writeValue(new File(Main.PATH+"/networksimulator/livePlotting/data.json"),dataOne);
             }
             else if (Main.TEST_CASE == 1){
-                objectMapper.writeValue(new File("/home/sheryan/networksimulator/livePlotting/data.json"),dataTwo);
+                objectMapper.writeValue(new File(Main.PATH+"/networksimulator/livePlotting/data.json"),dataTwo);
             }
             else{
-                objectMapper.writeValue(new File("/home/sheryan/networksimulator/livePlotting/data.json"),dataThree);
+                objectMapper.writeValue(new File(Main.PATH+"/networksimulator/livePlotting/data.json"),dataThree);
             }
         }
     }
